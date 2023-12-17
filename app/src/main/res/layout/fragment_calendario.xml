@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="55"
+    android:backgroundTint="#9C27B0"
+    tools:context=".fragments.CalendarioFragment">
+
+
+    <Button
+        android:id="@+id/datepicker"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:background="#779C27B0"
+        android:backgroundTint="#55ADF3"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Pick a Date"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        app:strokeColor="#DF8211B3"
+        app:strokeWidth="3dp">
+
+    </Button>
+
+
+
+</RelativeLayout>
