@@ -1,11 +1,20 @@
 package com.example.spese_myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.spese_myapplication.fragments.Item;
+import com.example.spese_myapplication.fragments.MyAdapter;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -13,17 +22,18 @@ public class MainActivity extends AppCompatActivity  {
     ViewPager2 viewPager2;
     MyViewPageAdapter myViewPageAdapter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabLayout= findViewById(R.id.tab_layout);
-        viewPager2=findViewById(R.id.view_pager);
-        myViewPageAdapter= new MyViewPageAdapter(this);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager2 = findViewById(R.id.view_pager);
+        myViewPageAdapter = new MyViewPageAdapter(this);
 
         viewPager2.setAdapter(myViewPageAdapter);
-
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -50,9 +60,10 @@ public class MainActivity extends AppCompatActivity  {
                 tabLayout.getTabAt(position).select();
             }
         });
+
     }
-
-
-
-
 }
+
+
+
+

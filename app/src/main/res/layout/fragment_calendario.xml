@@ -28,6 +28,74 @@
 
     </Button>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_weight="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/datepicker"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="134dp" />
+
+
+    <GridLayout
+        android:layout_width="323dp"
+        android:layout_height="161dp"
+        android:layout_below="@+id/recyclerView"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="23dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="10dp"
+        android:rowCount="2">
+
+        <EditText
+            android:id="@+id/editNome"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+
+            android:hint="Nome" />
+
+        <EditText
+            android:id="@+id/editTipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:hint="Tipo spesa" />
+
+        <EditText
+            android:id="@+id/editPrezzo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:hint="Numero" />
+    </GridLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="137dp"
+        android:clickable="true"
+        android:contentDescription="@string/add_item_description"
+        android:focusable="true"
+        android:src="@android:drawable/ic_input_add"
+        android:text="+" />
 
 
 </RelativeLayout>
