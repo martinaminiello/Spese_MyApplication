@@ -6,69 +6,125 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.spese_myapplication.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CalendarioFragment extends Fragment {
 
-    private Button btnDatePicker;
-    private Calendar selectedDate;
+    private CalendarView calendarView;
+    private EditText editTextName;
+    private EditText editTextType;
+    private EditText editTextPrice;
+    private Button btnAddItem;
+    private RecyclerView recyclerViewEvents;
+    private EventAdapter eventAdapter;
+    private Map<String, List<Event>> eventMap; // Map to store events for each date
+    private String selectedDate; // Currently selected date
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario, container, false);
 
-        btnDatePicker = view.findViewById(R.id.datepicker);
+        calendarView = view.findViewById(R.id.calendarView);
+        editTextName = view.findViewById(R.id.editTextName);
+        editTextType = view.findViewById(R.id.editTextType);
+        editTextPrice = view.findViewById(R.id.editTextPrice);
+        btnAddItem = view.findViewById(R.id.btnAddItem);
+        recyclerViewEvents = view.findViewById(R.id.recyclerViewEvents);
 
-        btnDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
+        // Initialize event map
+        eventMap = new HashMap<>();
+
+        // Set up RecyclerView
+        eventAdapter = new EventAdapter(new ArrayList<>());
+        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewEvents.setAdapter(eventAdapter);
+
+        // Set up CalendarView listener
+        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            // Update events for the selected date
+            selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+            updateEventsForDate(selectedDate);
         });
 
-        // Initialize selectedDate with the current date
-        selectedDate = Calendar.getInstance();
+        // Set initial date
+        selectedDate = getCurrentDate();
+        updateEventsForDate(selectedDate);
 
-        // Update button text with the current date
-        updateButtonText();
+        // Set up Add Item button click listener
+        btnAddItem.setOnClickListener(v -> addItemAction());
 
         return view;
     }
 
-    private void showDatePickerDialog() {
-        int year = selectedDate.get(Calendar.YEAR);
-        int month = selectedDate.get(Calendar.MONTH);
-        int day = selectedDate.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                requireContext(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-                        // Update selectedDate with the picked date
-                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
-
-                        // Update button text with the selected date
-                        updateButtonText();
-                    }
-                },
-                year, month, day);
-
-        datePickerDialog.show();
+    // Get the current date in "yyyy-MM-dd" format
+    private String getCurrentDate() {
+        // Get the current date from the CalendarView
+        return Event.getCurrentDate();
     }
 
-    private void updateButtonText() {
-        // Format the date using the desired format
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE d MMMM", Locale.getDefault());
-        String buttonText = sdf.format(selectedDate.getTime());
-        btnDatePicker.setText(buttonText);
+    // Update events for the selected date
+    private void updateEventsForDate(String date) {
+        List<Event> events = eventMap.get(date);
+        if (events != null) {
+            eventAdapter.setEvents(events);
+        } else {
+            eventAdapter.setEvents(new ArrayList<>());
+        }
     }
+
+    // Add Item button click handler
+    private void addItemAction() {
+        String itemName = editTextName.getText().toString().trim();
+        String itemType = editTextType.getText().toString().trim();
+        String itemPriceString = editTextPrice.getText().toString().trim();
+
+        if (!itemName.isEmpty() && !itemType.isEmpty() && !itemPriceString.isEmpty()) {
+            CharSequence itemPrice = itemPriceString;
+
+            // Create a new event with the entered item details
+            Event newItem = new Event(itemName, itemType, itemPrice);
+
+            // Add the item to the map for the selected date
+            List<Event> eventsForDate = eventMap.get(selectedDate);
+            if (eventsForDate == null) {
+                eventsForDate = new ArrayList<>();
+                eventMap.put(selectedDate, eventsForDate);
+            }
+            eventsForDate.add(newItem);
+
+            // Update the events for the selected date
+            updateEventsForDate(selectedDate);
+
+            // Clear the input fields
+            editTextName.getText().clear();
+            editTextType.getText().clear();
+            editTextPrice.getText().clear();
+
+            Toast.makeText(getContext(), "Item added successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

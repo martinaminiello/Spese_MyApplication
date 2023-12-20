@@ -9,25 +9,77 @@
     tools:context=".fragments.CalendarioFragment">
 
 
-    <Button
-        android:id="@+id/datepicker"
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="272dp"
+
+        android:layout_centerHorizontal="true"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/itemlayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:background="#779C27B0"
-        android:backgroundTint="#55ADF3"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="Pick a Date"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="25dp"
-        app:strokeColor="#DF8211B3"
-        app:strokeWidth="3dp">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendarView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="-16dp"
+        android:orientation="horizontal"
+        android:padding="25dp">
 
-    </Button>
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="prodotto"
+            android:inputType="text" />
 
+        <EditText
+            android:id="@+id/editTextType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="tipo spesa"
+            android:inputType="text" />
 
+        <EditText
+            android:id="@+id/editTextPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="prezzo"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEvents"
+        android:layout_width="411dp"
+        android:layout_height="202dp"
+        android:layout_below="@id/calendarView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="151dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="18dp" />
+
+    <Button
+        android:id="@+id/btnAddItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemlayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:onClick="addItemAction"
+        android:text="Aggiungi spesa" />
 
 </RelativeLayout>
