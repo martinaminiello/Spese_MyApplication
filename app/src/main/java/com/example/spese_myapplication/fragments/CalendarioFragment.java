@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class CalendarioFragment extends Fragment {
 
@@ -103,6 +104,8 @@ public class CalendarioFragment extends Fragment {
 
     // Add Item button click handler
     private void addItemAction() {
+        UUID uuid = UUID.randomUUID();
+        String itemId= uuid.toString();
         String itemName = editTextName.getText().toString().trim();
         String itemType = editTextType.getText().toString().trim();
         String itemPriceString = editTextPrice.getText().toString().trim();
@@ -111,7 +114,7 @@ public class CalendarioFragment extends Fragment {
             CharSequence itemPrice = itemPriceString;
 
             // Create a new event with the entered item details
-            Event newItem = new Event(itemName, itemType, itemPrice);
+            Event newItem = new Event(itemId,itemName, itemType, itemPrice);
 
             // Add the item to the map for the selected date
             List<Event> eventsForDate = eventMap.get(selectedDate);
@@ -128,7 +131,7 @@ public class CalendarioFragment extends Fragment {
             double prezzo = Double.parseDouble(editTextPrice.getText().toString());
 
             // Add the item using the ViewModel
-            viewModel.addItem(nome, tipo, prezzo, selectedDate);
+            viewModel.addItem(itemId,nome, tipo, prezzo, selectedDate);
 
             // Clear the input fields
             editTextName.getText().clear();

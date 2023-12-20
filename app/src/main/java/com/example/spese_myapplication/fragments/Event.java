@@ -11,13 +11,18 @@ public class Event {
     private String name;
     private String type;
     private CharSequence price;
+    String id;
 
-    public Event(String name, String type, CharSequence price) {
+    public Event(String id,String name, String type, CharSequence price) {
         this.name = name;
         this.type=type;
         this.price=price;
+        this.id=id;
     }
 
+    public String getId(){
+        return id;
+    }
     public String getName() {
         return name;
     }
@@ -33,5 +38,5 @@ public class Event {
         return dateFormat.format(new Date(currentDateMillis));
     }
 
-    // Add any additional fields and methods as needed
+
 }

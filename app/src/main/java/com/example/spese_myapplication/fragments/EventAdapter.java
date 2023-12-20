@@ -35,9 +35,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Event event = events.get(position);
-        holder.textName.setText("Nome: " + event.getName());
+        holder.textName.setText("Prodotto: " + event.getName());
         holder.textType.setText("Tipo: " + event.getType());
-        holder.textPrice.setText("Prezzo: " + event.getPrice());
+        holder.textPrice.setText("Prezzo: " + event.getPrice()+"€");
     }
 
     @Override

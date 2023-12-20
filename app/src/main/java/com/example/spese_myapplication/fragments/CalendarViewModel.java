@@ -13,11 +13,12 @@ public class CalendarViewModel extends ViewModel {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void addItem(String nome, String tipo, double prezzo, String selectedDate) {
+    public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate) {
         // Create a map with the data
 
 
         Map<String, Object> item = new HashMap<>();
+        item.put("idProdotto",id);
         item.put("nome", nome);
         item.put("tipo", tipo);
         item.put("prezzo", prezzo);
