@@ -14,11 +14,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.spese_myapplication.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,10 +42,13 @@ public class CalendarioFragment extends Fragment {
     private Map<String, List<Event>> eventMap; // Map to store events for each date
     private String selectedDate; // Currently selected date
 
+    private CalendarViewModel viewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario, container, false);
+        viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
         calendarView = view.findViewById(R.id.calendarView);
         editTextName = view.findViewById(R.id.editTextName);
@@ -73,6 +78,9 @@ public class CalendarioFragment extends Fragment {
 
         // Set up Add Item button click listener
         btnAddItem.setOnClickListener(v -> addItemAction());
+
+
+
 
         return view;
     }
@@ -115,6 +123,12 @@ public class CalendarioFragment extends Fragment {
 
             // Update the events for the selected date
             updateEventsForDate(selectedDate);
+            String nome = editTextName.getText().toString();
+            String tipo = editTextType.getText().toString();
+            double prezzo = Double.parseDouble(editTextPrice.getText().toString());
+
+            // Add the item using the ViewModel
+            viewModel.addItem(nome, tipo, prezzo, selectedDate);
 
             // Clear the input fields
             editTextName.getText().clear();
