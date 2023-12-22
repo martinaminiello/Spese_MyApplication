@@ -9,6 +9,14 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string-array name="tipi">
+        <item>igiene</item>
+        <item>cibo</item>
+        <item>farmaci</item>
+        <item>ricariche</item>
+        <item>altro</item>
+    </string-array>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

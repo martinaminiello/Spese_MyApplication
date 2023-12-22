@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ public class CalendarioFragment extends Fragment {
     private EditText editTextName;
     private EditText editTextType;
     private EditText editTextPrice;
+    private Spinner spinnerType;
     private Button btnAddItem;
     private RecyclerView recyclerViewEvents;
     private EventAdapter eventAdapter;
@@ -53,11 +56,16 @@ public class CalendarioFragment extends Fragment {
 
         calendarView = view.findViewById(R.id.calendarView);
         editTextName = view.findViewById(R.id.editTextName);
-        editTextType = view.findViewById(R.id.editTextType);
+        spinnerType = view.findViewById(R.id.spinnerType);
         editTextPrice = view.findViewById(R.id.editTextPrice);
         btnAddItem = view.findViewById(R.id.btnAddItem);
         recyclerViewEvents = view.findViewById(R.id.recyclerViewEvents);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(), R.array.tipi, android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(adapter);
         // Initialize event map
         eventMap = new HashMap<>();
 
@@ -107,10 +115,10 @@ public class CalendarioFragment extends Fragment {
         UUID uuid = UUID.randomUUID();
         String itemId= uuid.toString();
         String itemName = editTextName.getText().toString().trim();
-        String itemType = editTextType.getText().toString().trim();
+        String itemType = spinnerType.getSelectedItem().toString().trim();
         String itemPriceString = editTextPrice.getText().toString().trim();
 
-        if (!itemName.isEmpty() && !itemType.isEmpty() && !itemPriceString.isEmpty()) {
+        if (!itemName.isEmpty()  && !itemPriceString.isEmpty()) {
             CharSequence itemPrice = itemPriceString;
 
             // Create a new event with the entered item details
@@ -127,7 +135,7 @@ public class CalendarioFragment extends Fragment {
             // Update the events for the selected date
             updateEventsForDate(selectedDate);
             String nome = editTextName.getText().toString();
-            String tipo = editTextType.getText().toString();
+            String tipo = spinnerType.getSelectedItem().toString();
             double prezzo = Double.parseDouble(editTextPrice.getText().toString());
 
             // Add the item using the ViewModel
@@ -135,7 +143,7 @@ public class CalendarioFragment extends Fragment {
 
             // Clear the input fields
             editTextName.getText().clear();
-            editTextType.getText().clear();
+            spinnerType.setSelection(0);
             editTextPrice.getText().clear();
 
             Toast.makeText(getContext(), "Item added successfully", Toast.LENGTH_SHORT).show();

@@ -11,14 +11,15 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="311dp"
+        android:layout_width="match_parent"
+        android:layout_height="299dp"
 
         android:layout_alignParentTop="true"
 
 
         android:layout_centerHorizontal="true"
 
+        android:layout_marginTop="-13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,9 +32,10 @@
         android:layout_below="@id/calendarView"
         android:layout_alignParentStart="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="-16dp"
+        android:layout_marginTop="-10dp"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:padding="25dp">
+        android:padding="15dp">
 
         <EditText
             android:id="@+id/editTextName"
@@ -41,15 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="prodotto"
-            android:inputType="text" />
+            android:inputType="text"
+            />
 
-        <EditText
-            android:id="@+id/editTextType"
-            android:layout_width="0dp"
+        <!-- Add margin or adjust as needed -->
+        />
+
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="tipo spesa"
-            android:inputType="text" />
+            android:prompt="@array/tipi"
+            android:textAlignment="center"/>
 
         <EditText
             android:id="@+id/editTextPrice"
