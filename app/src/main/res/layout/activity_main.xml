@@ -2,42 +2,64 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/Widget.TextView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Add the Toolbar above the TabLayout -->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary">
+
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tab_layout">
+        android:layout_below="@+id/toolbar"> <!-- Adjust the layout_below attribute -->
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Calendario">
-        </com.google.android.material.tabs.TabItem>
+            android:text="Spese"></com.google.android.material.tabs.TabItem>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bilancio">
-        </com.google.android.material.tabs.TabItem>
+            android:text="Bilancio"></com.google.android.material.tabs.TabItem>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Spese">
-        </com.google.android.material.tabs.TabItem>
+            android:text="Analisi"></com.google.android.material.tabs.TabItem>
 
     </com.google.android.material.tabs.TabLayout>
 
-
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/view_pager"
         android:layout_below="@+id/tab_layout">
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="9dp"
+        android:text="Asil app"
+        android:textColor="#FDFDFD"
+        android:textSize="24sp" />
 
 </RelativeLayout>
