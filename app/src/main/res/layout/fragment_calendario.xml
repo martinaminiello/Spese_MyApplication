@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="prodotto"
+            android:textSize="15dp"
             android:inputType="text"
             />
 
@@ -59,11 +60,12 @@
 
         <EditText
             android:id="@+id/editTextPrice"
-            android:layout_width="0dp"
+            android:layout_width="3dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="prezzo"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:textSize="15dp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

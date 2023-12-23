@@ -70,9 +70,11 @@ public class CalendarioFragment extends Fragment {
         eventMap = new HashMap<>();
 
         // Set up RecyclerView
-        eventAdapter = new EventAdapter(new ArrayList<>());
+        eventAdapter = new EventAdapter(new ArrayList<>(), viewModel, recyclerViewEvents);
         recyclerViewEvents.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewEvents.setAdapter(eventAdapter);
+
+        eventAdapter.enableSwipeToDelete();
 
         // Set up CalendarView listener
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {

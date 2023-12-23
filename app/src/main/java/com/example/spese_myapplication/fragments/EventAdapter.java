@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spese_myapplication.R;
@@ -15,16 +16,24 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
     private List<Event> events;
+    private RecyclerView recyclerView;
+    private CalendarViewModel viewModel;
 
-    public EventAdapter(List<Event> events) {
+    public EventAdapter(List<Event> events, CalendarViewModel viewModel, RecyclerView recyclerView) {
+
         this.events = events;
+        this.recyclerView = recyclerView;
+        this.viewModel=viewModel;
     }
 
     public void setEvents(List<Event> events) {
         this.events = events;
         notifyDataSetChanged();
     }
-
+    public void enableSwipeToDelete() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this, viewModel));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,6 +54,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return events.size();
     }
 
+
+
+    public void deleteItem(int position) {
+        if (position >= 0 && position < events.size()) {
+            Event deletedItem = events.remove(position);
+            notifyItemRemoved(position);
+            viewModel.deleteItem(deletedItem.getId());
+        }
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textName;
@@ -57,6 +76,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             textType=itemView.findViewById(R.id.tvTipo);
             textPrice=itemView.findViewById(R.id.tvPrezzo);
         }
+
 
 
     }
