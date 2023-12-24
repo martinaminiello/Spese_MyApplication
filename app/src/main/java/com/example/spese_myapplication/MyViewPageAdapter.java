@@ -13,6 +13,7 @@ import com.example.spese_myapplication.fragments.SpeseFragment;
 public class MyViewPageAdapter extends FragmentStateAdapter {
     public MyViewPageAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+        
     }
 
     @NonNull
@@ -34,4 +35,5 @@ public class MyViewPageAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 3;
     }
+
 }

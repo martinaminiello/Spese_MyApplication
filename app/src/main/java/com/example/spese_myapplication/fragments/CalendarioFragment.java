@@ -154,4 +154,10 @@ public class CalendarioFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
 }
