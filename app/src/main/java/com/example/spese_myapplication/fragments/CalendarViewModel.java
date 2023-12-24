@@ -1,5 +1,7 @@
 package com.example.spese_myapplication.fragments;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.spese_myapplication.RichiedenteAsilo;
@@ -22,7 +24,11 @@ public class CalendarViewModel extends ViewModel {
 
     DocumentReference newDocumentReference = itemsCollection.document();
     String documentId = newDocumentReference.getId();
+    private final MutableLiveData<Double> budgetLiveData = new MutableLiveData<>();
 
+    public LiveData<Double> getBudgetLiveData() {
+        return budgetLiveData;
+    }
 
     public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate) {
         // Create a map with the data
@@ -92,75 +98,28 @@ public class CalendarViewModel extends ViewModel {
 
         // Add the item to Firestore
         itemsCollection.document("0001").set(RichiedenteAsilo);
+
     }
 
-  /*  public void updateBudget(double expense) {
-        // Log budget before update
-        System.out.println("Budget before update: " + budget);
-
-        // Deduct the expense from the budget only if budget is not null
-        if (budget != null) {
-            String idUser = "0001";
-            budget -= expense;
-
-            // Log budget after update
-            System.out.println("Budget after update: " + budget);
-
-            // Update the budget in Firestore
-            db.collection("RichiedenteAsilo").document(idUser)
-                    .update("Budget", budget)
-                    .addOnSuccessListener(aVoid -> {
-                        // Budget successfully updated in Firestore
-                        System.out.println("Budget successfully updated!");
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle errors here
-                        System.out.println("Error updating budget: " + e.getMessage());
-                    });
-        } else {
-            // Handle the case where budget is null
-            System.out.println("Error: Budget is null. Unable to deduct expense.");
-        }
-    }
-
-    private void updateBudgetInternal(double currentBudget, double expense) {
-        String idUser = "0001";
-        budget = currentBudget - expense;
+    public void updateBudgetOnFirestore(String userId, double newBudget) {
+        // Get a reference to the Firestore collection
+        DocumentReference userDocument = db.collection("RichiedenteAsilo").document(userId);
 
         // Update the budget in Firestore
-        db.collection("RichiedenteAsilo").document(idUser)
-                .update("Budget", budget)
+        Map<String, Object> updatedData = new HashMap<>();
+        updatedData.put("Budget", newBudget);
+
+        userDocument.update(updatedData)
                 .addOnSuccessListener(aVoid -> {
-                    // Budget successfully updated in Firestore
-                    System.out.println("Budget successfully updated!");
+                    // Budget successfully updated on Firestore
+                    System.out.println("Budget successfully updated on Firestore!");
+
+                    budgetLiveData.setValue(newBudget);
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors here
-                    System.out.println("Error updating budget: " + e.getMessage());
+                    System.out.println("Error updating budget on Firestore: " + e.getMessage());
                 });
     }
 
-    public void getBudget(OnBudgetFetchedListener listener) {
-        String idUser = "0001";
-
-        // Retrieve the budget from Firestore
-        db.collection("RichiedenteAsilo").document(idUser)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        // User document exists
-                        Double budget = documentSnapshot.getDouble("Budget");
-                        if (budget != null) {
-                            // Initialize the budget before notifying the listener
-                            this.budget = budget;
-                            listener.onBudgetFetched(budget);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Handle errors here
-                    System.out.println("Error fetching budget: " + e.getMessage());
-                    listener.onBudgetFetchFailed(e.getMessage());
-                });
-    }*/
 }

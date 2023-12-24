@@ -1,0 +1,33 @@
+package com.example.spese_myapplication;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class RichiedenteAsilo {
+    private String idRichiedenteAsilo;
+    private Double budget;
+
+    int currentDate = Calendar.getInstance().get(Calendar.MONTH);
+    private Integer creationDate;
+
+
+
+    public RichiedenteAsilo(String idRichiedenteAsilo){
+        this.idRichiedenteAsilo=idRichiedenteAsilo;
+        this.budget=60.00;
+        this.creationDate=Calendar.DECEMBER;
+
+    }
+    public String getIdRichiedenteAsilo() {
+        return idRichiedenteAsilo;
+    }
+    public Double getBudget() {
+
+        if(currentDate!=creationDate){
+            budget=budget+60;
+            creationDate=currentDate;
+        }
+      return budget;
+    }
+}
