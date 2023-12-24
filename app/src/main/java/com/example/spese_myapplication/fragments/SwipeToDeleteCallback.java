@@ -29,7 +29,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         int position = viewHolder.getAdapterPosition();
         String idProdotto = String.valueOf(adapter.getItemId(position)); // Assuming you have a method to get the item ID
         adapter.deleteItem(position);
-        viewModel.deleteItem(idProdotto); // Call the deleteItem method in your ViewModel
+        viewModel.deleteItem("0001","Subspese",idProdotto); // Call the deleteItem method in your ViewModel
     }
 
 }

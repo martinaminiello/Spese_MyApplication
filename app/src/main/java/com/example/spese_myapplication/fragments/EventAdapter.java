@@ -60,7 +60,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         if (position >= 0 && position < events.size()) {
             Event deletedItem = events.remove(position);
             notifyItemRemoved(position);
-            viewModel.deleteItem(deletedItem.getId());
+            viewModel.deleteItem("0001","Subspese",deletedItem.getId());
         }
     }
 
