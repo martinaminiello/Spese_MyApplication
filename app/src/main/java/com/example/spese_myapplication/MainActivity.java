@@ -1,10 +1,15 @@
 package com.example.spese_myapplication;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
+//import com.example.spese_myapplication.fragments.BudgetScheduler;
+import com.example.spese_myapplication.fragments.BudgetScheduler;
+import com.example.spese_myapplication.fragments.CalendarViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity  {
@@ -13,10 +18,13 @@ public class MainActivity extends AppCompatActivity  {
     ViewPager2 viewPager2;
     MyViewPageAdapter myViewPageAdapter;
 
+    CalendarViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
 
 
@@ -24,8 +32,9 @@ public class MainActivity extends AppCompatActivity  {
         viewPager2=findViewById(R.id.view_pager);
         myViewPageAdapter= new MyViewPageAdapter(this);
 
-        viewPager2.setAdapter(myViewPageAdapter);
 
+        viewPager2.setAdapter(new MyViewPageAdapter(this));
+        viewPager2.setOffscreenPageLimit(1);
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -41,7 +50,6 @@ public class MainActivity extends AppCompatActivity  {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -49,9 +57,14 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
+                tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
+
+
+        BudgetScheduler.scheduleBudgetIncrease(getApplicationContext());
+
     }
 
 

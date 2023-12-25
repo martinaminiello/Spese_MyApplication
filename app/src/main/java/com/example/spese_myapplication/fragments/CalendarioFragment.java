@@ -1,5 +1,7 @@
 package com.example.spese_myapplication.fragments;
 
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,7 +54,8 @@ public class CalendarioFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario, container, false);
-        viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(CalendarViewModel.class);
+
 
         calendarView = view.findViewById(R.id.calendarView);
         editTextName = view.findViewById(R.id.editTextName);
@@ -107,8 +110,10 @@ public class CalendarioFragment extends Fragment {
         List<Event> events = eventMap.get(date);
         if (events != null) {
             eventAdapter.setEvents(events);
+            eventAdapter.notifyDataSetChanged();
         } else {
             eventAdapter.setEvents(new ArrayList<>());
+            eventAdapter.notifyDataSetChanged();
         }
     }
 
@@ -154,10 +159,29 @@ public class CalendarioFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
 
+
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save your fragment's state if needed
+        outState.putString("selectedDate", selectedDate);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        // Restore your fragment's state if needed
+        if (savedInstanceState != null) {
+            selectedDate = savedInstanceState.getString("selectedDate");
+            updateEventsForDate(selectedDate);
+        }
     }
 
 }

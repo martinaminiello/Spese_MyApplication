@@ -15,19 +15,11 @@ public class RichiedenteAsilo {
 
     public RichiedenteAsilo(String idRichiedenteAsilo){
         this.idRichiedenteAsilo=idRichiedenteAsilo;
-        this.budget=60.00;
-        this.creationDate=Calendar.DECEMBER;
+
 
     }
     public String getIdRichiedenteAsilo() {
         return idRichiedenteAsilo;
     }
-    public Double getBudget() {
 
-        if(currentDate!=creationDate){
-            budget=budget+60;
-            creationDate=currentDate;
-        }
-      return budget;
-    }
 }

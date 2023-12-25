@@ -24,10 +24,20 @@ public class CalendarViewModel extends ViewModel {
 
     DocumentReference newDocumentReference = itemsCollection.document();
     String documentId = newDocumentReference.getId();
-    private final MutableLiveData<Double> budgetLiveData = new MutableLiveData<>();
 
-    public LiveData<Double> getBudgetLiveData() {
+    private MutableLiveData<Double> budgetLiveData = new MutableLiveData<>();
+
+    public LiveData<Double> getBudget() {
+        // If the budgetLiveData is not yet initialized, set an initial value
+        if (budgetLiveData.getValue() == null) {
+            budgetLiveData.setValue(60.00); // Set this to your initial budget
+        }
         return budgetLiveData;
+    }
+
+    // Method to update the budget value
+    public void updateBudget(double newBudget) {
+        budgetLiveData.setValue(newBudget);
     }
 
     public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate) {
