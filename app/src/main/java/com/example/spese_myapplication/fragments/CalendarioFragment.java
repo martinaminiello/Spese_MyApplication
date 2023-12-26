@@ -39,7 +39,7 @@ public class CalendarioFragment extends Fragment {
 
     private CalendarView calendarView;
     private EditText editTextName;
-    private EditText editTextType;
+
     private EditText editTextPrice;
     private Spinner spinnerType;
     private Button btnAddItem;

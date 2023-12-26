@@ -7,8 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
-//import com.example.spese_myapplication.fragments.BudgetScheduler;
-import com.example.spese_myapplication.fragments.BudgetScheduler;
+
 import com.example.spese_myapplication.fragments.CalendarViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-        BudgetScheduler.scheduleBudgetIncrease(getApplicationContext());
 
     }
 
