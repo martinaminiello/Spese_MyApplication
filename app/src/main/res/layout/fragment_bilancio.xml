@@ -18,6 +18,10 @@
         android:text="Budget:  "
         android:textSize="25dp" />
 
+    <!-- CardView for Spesa mensile -->
+
+    <!-- CardView for Spesa settimanale -->
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="344dp"
@@ -25,14 +29,50 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="182dp"
+        android:layout_marginTop="531dp"
         android:padding="16dp"
         android:text="Il saldo si aggiornerà ogni mese. La quota mensile spettante è di 60.00€"
         android:textAlignment="center"
         android:textSize="15dp" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardView2"
+        android:layout_width="294dp"
+        android:layout_height="99dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="380dp"
+        android:layout_marginEnd="16dp"
+        android:padding="25dp"
+        app:cardCornerRadius="20dp">
 
+        <TextView
+            android:id="@+id/textMese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="Spesa mensile: "
+            android:textSize="20dp" />
+    </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardView1"
+        android:layout_width="294dp"
+        android:layout_height="99dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="20dp"
+        android:padding="25dp">
 
+        <TextView
+            android:id="@+id/textSett"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="Spesa settimanale: "
+            android:textSize="20dp" />
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
