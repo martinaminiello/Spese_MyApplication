@@ -29,7 +29,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="531dp"
+        android:layout_marginTop="516dp"
         android:padding="16dp"
         android:text="Il saldo si aggiornerà ogni mese. La quota mensile spettante è di 60.00€"
         android:textAlignment="center"
@@ -51,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
+            android:textAlignment="center"
             android:text="Spesa mensile: "
             android:textSize="20dp" />
     </androidx.cardview.widget.CardView>
@@ -72,6 +73,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:text="Spesa settimanale: "
+            android:textAlignment="center"
             android:textSize="20dp" />
     </androidx.cardview.widget.CardView>
 

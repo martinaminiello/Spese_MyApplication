@@ -1,5 +1,11 @@
 package com.example.spese_myapplication.fragments;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import static com.example.spese_myapplication.fragments.DateConverter.convertDateToTimestamp;
+
+import android.util.Log;
+
 import androidx.constraintlayout.motion.widget.KeyCycle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,7 +20,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -36,16 +46,16 @@ public class CalendarViewModel extends ViewModel {
     }
 
 
-    public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate) {
+    public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate){
         // Create a map with the data
 
-
+        long timestamp = convertDateToTimestamp(selectedDate);
         Map<String, Object> item = new HashMap<>();
         item.put("idProdotto",id);
         item.put("nome", nome);
         item.put("tipo", tipo);
         item.put("prezzo", prezzo);
-        item.put("data",selectedDate);
+        item.put("data",timestamp);
 
 
 
@@ -185,4 +195,5 @@ public class CalendarViewModel extends ViewModel {
         itemsCollection.document("0001").set(RichiedenteAsilo);
 
     }
+
 }
