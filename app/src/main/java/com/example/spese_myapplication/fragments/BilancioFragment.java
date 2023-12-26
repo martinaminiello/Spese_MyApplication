@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +61,6 @@ public class BilancioFragment extends Fragment {
         viewModel.getUpdatedBudgetLiveData().observe(getActivity(), new Observer<Double>() {
             @Override
             public void onChanged(Double newBudget) {
-                Log.d("YourTag", "Observer onChanged: " + newBudget);
                updateBudgetTextView(newBudget);
             }
         });
@@ -122,8 +124,16 @@ public class BilancioFragment extends Fragment {
     }
 
     private void updateBudgetTextView(Double currentBudget) {
-        Log.d("YourTag", "Observer onChanged: " + currentBudget);
-        budgetTextView.setText("Budget: " + currentBudget+"€");
+        SpannableString spannableString = new SpannableString(String.format(Locale.getDefault(), "Budget:\n\n        %.2f€", currentBudget));
+
+// Set a larger text size for the currentBudget part
+        spannableString.setSpan(new RelativeSizeSpan(1.5f), 8, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+// Apply the SpannableString to the TextView
+        budgetTextView.setText(spannableString);
+
+
+
     }
 
 

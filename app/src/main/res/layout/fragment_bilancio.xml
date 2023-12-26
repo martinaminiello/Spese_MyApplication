@@ -11,10 +11,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="28dp"
+        android:padding="16dp"
+        android:text="Budget:  "
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="39dp"
+        android:layout_marginTop="182dp"
         android:padding="16dp"
-        android:text="Budget:"
-        android:textSize="25dp" />
+        android:text="Il saldo si aggiornerà ogni mese. La quota mensile spettante è di 60.00€"
+        android:textAlignment="center"
+        android:textSize="15dp" />
 </RelativeLayout>
