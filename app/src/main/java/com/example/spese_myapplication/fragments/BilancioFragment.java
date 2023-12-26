@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class BilancioFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bilancio, container, false);
-        viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity().getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(CalendarViewModel.class);
         budgetTextView = view.findViewById(R.id.textView2);
 
 
@@ -54,6 +55,13 @@ public class BilancioFragment extends Fragment {
         // Schedule periodic budget updates
         scheduleBudgetUpdates();
 
+        viewModel.getUpdatedBudgetLiveData().observe(getActivity(), new Observer<Double>() {
+            @Override
+            public void onChanged(Double newBudget) {
+                Log.d("YourTag", "Observer onChanged: " + newBudget);
+               updateBudgetTextView(newBudget);
+            }
+        });
         return view;
     }
 
@@ -70,7 +78,7 @@ public class BilancioFragment extends Fragment {
                         if (documentSnapshot.exists()) {
                             Double budget = documentSnapshot.getDouble("Budget");
                             currentBudget = (budget != null) ? budget : 60.00;
-                            updateBudgetTextView();
+                            updateBudgetTextView(currentBudget);
                         }
                     }
                 })
@@ -102,7 +110,7 @@ public class BilancioFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        updateBudgetTextView();
+                        updateBudgetTextView(currentBudget);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -113,7 +121,11 @@ public class BilancioFragment extends Fragment {
                 });
     }
 
-    private void updateBudgetTextView() {
+    private void updateBudgetTextView(Double currentBudget) {
+        Log.d("YourTag", "Observer onChanged: " + currentBudget);
         budgetTextView.setText("Budget: " + currentBudget+"€");
     }
+
+
+
 }

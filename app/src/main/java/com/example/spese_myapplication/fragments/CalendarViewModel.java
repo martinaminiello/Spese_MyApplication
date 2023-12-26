@@ -1,5 +1,6 @@
 package com.example.spese_myapplication.fragments;
 
+import androidx.constraintlayout.motion.widget.KeyCycle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -20,25 +21,18 @@ public class CalendarViewModel extends ViewModel {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Double budget;
     DocumentReference documentRef = db.collection("Spese").document("0001");
+    DocumentReference documentRefBudget = db.collection("RichiedenteAsilo").document("0001");
+
     CollectionReference itemsCollection = db.collection("Subspese");
 
     DocumentReference newDocumentReference = itemsCollection.document();
     String documentId = newDocumentReference.getId();
+    private MutableLiveData<Double> updatedBudgetLiveData = new MutableLiveData<>();
 
-    private MutableLiveData<Double> budgetLiveData = new MutableLiveData<>();
-
-    public LiveData<Double> getBudget() {
-        // If the budgetLiveData is not yet initialized, set an initial value
-        if (budgetLiveData.getValue() == null) {
-            budgetLiveData.setValue(60.00); // Set this to your initial budget
-        }
-        return budgetLiveData;
+    public LiveData<Double> getUpdatedBudgetLiveData() {
+        return updatedBudgetLiveData;
     }
 
-    // Method to update the budget value
-    public void updateBudget(double newBudget) {
-        budgetLiveData.setValue(newBudget);
-    }
 
     public void addItem(String id, String nome, String tipo, double prezzo, String selectedDate) {
         // Create a map with the data
@@ -51,14 +45,51 @@ public class CalendarViewModel extends ViewModel {
         item.put("prezzo", prezzo);
         item.put("data",selectedDate);
 
-       // updateBudget(prezzo);
-
-        // Get a reference to the Firestore collection
 
 
+        documentRef.collection("Subspese").add(item)
+                .addOnSuccessListener(documentReference -> {
+                    // Item added successfully, now update the budget
 
-        // Add the item to Firestore
-        documentRef.collection("Subspese").add(item);
+                    // Retrieve the current budget from Firestore
+                    documentRefBudget.get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    Double currentBudget = documentSnapshot.getDouble("Budget");
+
+                                    // Check if currentBudget is not null before proceeding
+                                    if (currentBudget != null) {
+                                        // Subtract 'prezzo' from the current budget
+                                        double newBudget = currentBudget - prezzo;
+
+                                        // Update the budget in Firestore
+                                        documentRefBudget.update("Budget", newBudget)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    updatedBudgetLiveData.postValue(newBudget);
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    // Handle the failure to update the budget
+                                                    // You might want to consider rolling back the item addition
+                                                    // since the budget update failed
+                                                });
+                                    } else {
+                                        // Handle the case where 'Budget' is null in Firestore
+                                        // You might want to consider rolling back the item addition
+                                    }
+                                } else {
+                                    // Handle the case where the document doesn't exist
+                                    // You might want to consider rolling back the item addition
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                // Handle the failure to retrieve the current budget
+                                // You might want to consider rolling back the item addition
+                            });
+
+                })
+                .addOnFailureListener(e -> {
+                    // Handle the failure to add the item to Firestore
+                });
 
     }
     public void deleteItem(String parentId, String subcollectionName, String idProdotto) {
@@ -92,6 +123,8 @@ public class CalendarViewModel extends ViewModel {
             }
         });
     }
+
+    //FOR TESTING
     public void addUser() {
         // Create a map with the data
 
@@ -111,25 +144,6 @@ public class CalendarViewModel extends ViewModel {
 
     }
 
-    public void updateBudgetOnFirestore(String userId, double newBudget) {
-        // Get a reference to the Firestore collection
-        DocumentReference userDocument = db.collection("RichiedenteAsilo").document(userId);
 
-        // Update the budget in Firestore
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put("Budget", newBudget);
-
-        userDocument.update(updatedData)
-                .addOnSuccessListener(aVoid -> {
-                    // Budget successfully updated on Firestore
-                    System.out.println("Budget successfully updated on Firestore!");
-
-                    budgetLiveData.setValue(newBudget);
-                })
-                .addOnFailureListener(e -> {
-                    // Handle errors here
-                    System.out.println("Error updating budget on Firestore: " + e.getMessage());
-                });
-    }
 
 }
