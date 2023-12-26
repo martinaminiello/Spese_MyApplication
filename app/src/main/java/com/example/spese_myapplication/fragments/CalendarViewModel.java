@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel;
 import com.example.spese_myapplication.RichiedenteAsilo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -106,10 +108,15 @@ public class CalendarViewModel extends ViewModel {
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    // Get the reference to the document within the subcollection and delete it
+                    // Get the price of the deleted item
+                    Double deletedItemPrice = document.getDouble("prezzo");
+
+                    // Update the budget first
+                    updateBudget(deletedItemPrice);
+
+                    // Now, delete the item from the subcollection
                     subcollection.document(document.getId()).delete()
                             .addOnSuccessListener(aVoid -> {
-                                // Document successfully deleted
                                 System.out.println("DocumentSnapshot successfully deleted!");
                             })
                             .addOnFailureListener(e -> {
@@ -118,13 +125,48 @@ public class CalendarViewModel extends ViewModel {
                             });
                 }
             } else {
-                // Handle errors here
+                // Handle errors in fetching the item to be deleted
                 System.out.println("Error getting item: " + task.getException());
             }
         });
     }
 
-    //FOR TESTING
+    private void updateBudget(double deletedItemPrice) {
+        // Fetch the current budget from Firestore
+        documentRefBudget.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Double currentBudget = documentSnapshot.getDouble("Budget");
+
+                        // Check if currentBudget is not null before proceeding
+                        if (currentBudget != null) {
+                            // Subtract 'prezzo' from the current budget
+                            double newBudget = currentBudget + deletedItemPrice;
+
+                            // Update the budget in Firestore
+                            documentRefBudget.update("Budget", newBudget)
+                                    .addOnSuccessListener(aVoid -> {
+                                        updatedBudgetLiveData.postValue(newBudget);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Handle the failure to update the budget
+                                        // You might want to consider rolling back the item addition
+                                        // since the budget update failed
+                                    });
+                        } else {
+                            // Handle the case where 'Budget' is null in Firestore
+                            // You might want to consider rolling back the item addition
+                        }
+                    } else {
+                        // Handle the case where the document doesn't exist
+                        // You might want to consider rolling back the item addition
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle the failure to retrieve the current budget
+                    // You might want to consider rolling back the item addition
+                });
+}   //FOR TESTING
     public void addUser() {
         // Create a map with the data
 
@@ -143,7 +185,4 @@ public class CalendarViewModel extends ViewModel {
         itemsCollection.document("0001").set(RichiedenteAsilo);
 
     }
-
-
-
 }

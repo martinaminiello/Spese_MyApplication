@@ -20,13 +20,24 @@ import android.widget.TextView;
 import com.example.spese_myapplication.R;
 //import com.example.spese_myapplication.fragments.BudgetScheduler;
 import com.example.spese_myapplication.fragments.CalendarViewModel;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class BilancioFragment extends Fragment {
 
@@ -52,6 +63,8 @@ public class BilancioFragment extends Fragment {
 
 
 
+
+
         // Load initial budget from Firestore
         loadInitialBudget();
 
@@ -64,6 +77,9 @@ public class BilancioFragment extends Fragment {
                updateBudgetTextView(newBudget);
             }
         });
+
+
+
         return view;
     }
 
@@ -135,6 +151,7 @@ public class BilancioFragment extends Fragment {
 
 
     }
+
 
 
 

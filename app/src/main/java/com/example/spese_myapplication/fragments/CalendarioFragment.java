@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.spese_myapplication.R;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -49,6 +50,8 @@ public class CalendarioFragment extends Fragment {
     private String selectedDate; // Currently selected date
 
     private CalendarViewModel viewModel;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    DocumentReference documentRefBudget = db.collection("RichiedenteAsilo").document("0001");
 
     @Nullable
     @Override
@@ -120,16 +123,14 @@ public class CalendarioFragment extends Fragment {
     // Add Item button click handler
     private void addItemAction() {
         UUID uuid = UUID.randomUUID();
-        String itemId= uuid.toString();
+        String itemId = uuid.toString();
         String itemName = editTextName.getText().toString().trim();
         String itemType = spinnerType.getSelectedItem().toString().trim();
         String itemPriceString = editTextPrice.getText().toString().trim();
 
-        if (!itemName.isEmpty()  && !itemPriceString.isEmpty()) {
-            CharSequence itemPrice = itemPriceString;
-
+        if (!itemName.isEmpty() && !itemPriceString.isEmpty()) {
             // Create a new event with the entered item details
-            Event newItem = new Event(itemId,itemName, itemType, itemPrice);
+            Event newItem = new Event(itemId, itemName, itemType, itemPriceString);
 
             // Add the item to the map for the selected date
             List<Event> eventsForDate = eventMap.get(selectedDate);
@@ -137,27 +138,48 @@ public class CalendarioFragment extends Fragment {
                 eventsForDate = new ArrayList<>();
                 eventMap.put(selectedDate, eventsForDate);
             }
-            eventsForDate.add(newItem);
 
-            // Update the events for the selected date
-            updateEventsForDate(selectedDate);
             String nome = editTextName.getText().toString();
             String tipo = spinnerType.getSelectedItem().toString();
             double prezzo = Double.parseDouble(editTextPrice.getText().toString());
+            List<Event> finalEventsForDate = eventsForDate;
+            documentRefBudget.get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Double currentBudget = documentSnapshot.getDouble("Budget");
 
-            // Add the item using the ViewModel
-            viewModel.addItem(itemId,nome, tipo, prezzo, selectedDate);
+                            if (currentBudget != null && currentBudget - prezzo >= 0) {
+                                // Update the events for the selected date
+                                finalEventsForDate.add(newItem);
+                                updateEventsForDate(selectedDate);
 
-            // Clear the input fields
-            editTextName.getText().clear();
-            spinnerType.setSelection(0);
-            editTextPrice.getText().clear();
+                                // Add the item to the ViewModel
+                                viewModel.addItem(itemId, nome, tipo, prezzo, selectedDate);
 
-            Toast.makeText(getContext(), "Item added successfully", Toast.LENGTH_SHORT).show();
+                                // Clear the input fields
+                                editTextName.getText().clear();
+                                spinnerType.setSelection(0);
+                                editTextPrice.getText().clear();
+
+                                Toast.makeText(getContext(), "Spesa aggiunta!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Il prezzo è troppo alto!", Toast.LENGTH_SHORT).show();
+                                editTextName.getText().clear();
+                                spinnerType.setSelection(0);
+                                editTextPrice.getText().clear();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle the failure to retrieve the current budget
+                        // You might want to consider rolling back the item addition
+                    });
         } else {
-            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Riempire tutti i campi!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 
 
