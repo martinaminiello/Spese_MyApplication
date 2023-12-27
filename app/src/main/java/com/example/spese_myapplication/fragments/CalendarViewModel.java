@@ -10,22 +10,19 @@ import androidx.constraintlayout.motion.widget.KeyCycle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.example.spese_myapplication.RichiedenteAsilo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 
 public class CalendarViewModel extends ViewModel {
@@ -43,6 +40,11 @@ public class CalendarViewModel extends ViewModel {
 
     public LiveData<Double> getUpdatedBudgetLiveData() {
         return updatedBudgetLiveData;
+    }
+    private MutableLiveData<Map<String, Integer>> tipoCountsLiveData = new MutableLiveData<>();
+
+    public LiveData<Map<String, Integer>> getTipoCountsLiveData() {
+        return tipoCountsLiveData;
     }
 
 
@@ -195,5 +197,75 @@ public class CalendarViewModel extends ViewModel {
         itemsCollection.document("0001").set(RichiedenteAsilo);
 
     }
+    public void fillChart(){
+        CollectionReference collectionReference = FirebaseFirestore.getInstance()
+                .collection("Spese")
+                .document("0001")
+                .collection("Subspese");
 
+        // Add a real-time listener
+        collectionReference.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if (e != null) {
+                // Handle errors, such as logging or displaying an error message
+                return;
+            }
+
+            if (queryDocumentSnapshots != null) {
+                // Count occurrences of each Tipo
+                Map<String, Integer> tipoCountMap = new HashMap<>();
+
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    String tipo = document.getString("Tipo");
+
+                    if (tipo != null) {
+                        // Increment count for the Tipo
+                        tipoCountMap.put(tipo, tipoCountMap.getOrDefault(tipo, 0) + 1);
+                    }
+                }
+
+                // Calculate percentages
+                int totalItems = queryDocumentSnapshots.size();
+                Map<String, Double> tipoPercentageMap = new HashMap<>();
+
+                for (Map.Entry<String, Integer> entry : tipoCountMap.entrySet()) {
+                    String tipo = entry.getKey();
+                    int count = entry.getValue();
+                    double percentage = (count / (double) totalItems) * 100.0;
+                    tipoPercentageMap.put(tipo, percentage);
+                }
+
+
+            }
+        });
+    }
+
+    public void fetchTipoCounts() {
+        db.collection("Spese").
+                document("0001").collection("Subspese")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                if (e != null) {
+                    // Handle error
+                    return;
+                }
+
+                Map<String, Integer> tipoCounts = new HashMap<>();
+
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    // Assuming "Tipo" is a field in your Firestore documents
+                    String tipo = document.getString("Tipo");
+
+                    // Update Tipo counts
+                    if (tipo != null) {
+                        tipoCounts.put(tipo, tipoCounts.getOrDefault(tipo, 0) + 1);
+                    }
+                }
+
+                // Update LiveData with Tipo counts
+                tipoCountsLiveData.postValue(tipoCounts);
+            }
+        });
+    }
 }
+
