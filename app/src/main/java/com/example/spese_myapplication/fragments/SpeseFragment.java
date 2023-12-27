@@ -121,6 +121,7 @@ public class SpeseFragment extends Fragment {
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextSize(16f);
 
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
@@ -136,6 +137,7 @@ public class SpeseFragment extends Fragment {
 
 // Set legend orientation to vertical
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setXEntrySpace(10f);
         legend.setYOffset(60f);
 
     }
