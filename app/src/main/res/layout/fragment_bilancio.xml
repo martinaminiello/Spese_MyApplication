@@ -18,6 +18,7 @@
         android:text="Budget:  "
         android:textSize="25dp" />
 
+
     <!-- CardView for Spesa mensile -->
 
     <!-- CardView for Spesa settimanale -->
@@ -78,5 +79,16 @@
             android:textAlignment="center"
             android:textSize="20dp" />
     </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="117dp"
+        android:layout_marginEnd="162dp" />
 
 </RelativeLayout>

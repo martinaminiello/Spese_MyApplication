@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.spese_myapplication.R;
 //import com.example.spese_myapplication.fragments.BudgetScheduler;
@@ -65,7 +66,7 @@ public class BilancioFragment extends Fragment {
     CardView cardView2;
     TextView textMese;
 
-
+    ProgressBar loadingIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,14 +79,17 @@ public class BilancioFragment extends Fragment {
         textSett = view.findViewById(R.id.textSett);
         cardView2 = view.findViewById(R.id.CardView2);
         textMese = view.findViewById(R.id.textMese);
+        loadingIndicator = view.findViewById(R.id.progressBar);
 
 
-
+        showLoadingIndicator();
 
 
 
         // Load initial budget from Firestore
         loadInitialBudget();
+
+
 
         // Schedule periodic budget updates
         scheduleBudgetUpdates();
@@ -96,7 +100,9 @@ public class BilancioFragment extends Fragment {
         viewModel.getUpdatedBudgetLiveData().observe(getActivity(), new Observer<Double>() {
             @Override
             public void onChanged(Double newBudget) {
-               updateBudgetTextView(newBudget);
+
+                updateBudgetTextView(newBudget);
+
             }
         });
 
@@ -119,6 +125,7 @@ public class BilancioFragment extends Fragment {
                             Double budget = documentSnapshot.getDouble("Budget");
                             currentBudget = (budget != null) ? budget : 60.00;
                             updateBudgetTextView(currentBudget);
+                            hideLoadingIndicator();
                         }
                     }
                 })
@@ -292,6 +299,16 @@ public class BilancioFragment extends Fragment {
         spannableString.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         textMese.setText(spannableString);
+    }
+
+    private void showLoadingIndicator() {
+        // Show your loading indicator
+        loadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingIndicator() {
+        // Hide your loading indicator
+        loadingIndicator.setVisibility(View.GONE);
     }
 
 }
