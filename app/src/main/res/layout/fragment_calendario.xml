@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="55"
-    android:backgroundTint="#9C27B0"
+    android:backgroundTint="#FE9E50"
+
     tools:context=".fragments.CalendarioFragment">
 
 
@@ -13,13 +14,12 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="299dp"
-
         android:layout_alignParentTop="true"
 
 
         android:layout_centerHorizontal="true"
 
-        android:layout_marginTop="-13dp"
+        android:layout_marginTop="-5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,11 @@
         android:layout_below="@id/itemlayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#076AEC"
+
         android:onClick="addItemAction"
+        android:elevation="12dp"
+        android:translationZ="19dp"
         android:text="Aggiungi spesa" />
 
     <androidx.recyclerview.widget.RecyclerView

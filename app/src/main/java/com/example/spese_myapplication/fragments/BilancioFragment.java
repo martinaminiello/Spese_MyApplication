@@ -141,7 +141,7 @@ public class BilancioFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Update budget every 15 minutes
+                // Update budget every 30 days
                 updateBudget(60.0);
                 handler.postDelayed(this, updateInterval);
             }

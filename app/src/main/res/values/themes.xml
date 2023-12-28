@@ -3,7 +3,13 @@
     <style name="Base.Theme.Spese_MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorEdgeEffect">#31076AEC</item>
     </style>
 
     <style name="Theme.Spese_MyApplication" parent="Base.Theme.Spese_MyApplication" />
+
+    <style name="MyTabLayout" parent="Widget.Design.TabLayout">
+        <!-- Customize the tab indicator color -->
+        <item name="tabIndicatorColor">#FF9800</item>
+    </style>
 </resources>

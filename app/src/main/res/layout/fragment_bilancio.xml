@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     tools:context=".fragments.BilancioFragment">
 
     <TextView
@@ -62,6 +63,7 @@
         android:id="@+id/CardView1"
         android:layout_width="294dp"
         android:layout_height="99dp"
+
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="240dp"
